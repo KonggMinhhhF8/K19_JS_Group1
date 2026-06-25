@@ -11,6 +11,7 @@ async function initProductPage() {
         renderStatistics(products,categories);
         renderProductTable(products);
         filteredCate(categories);
+        searchBar(products);
         console.log("init thành cống")
 
     }
@@ -148,6 +149,16 @@ function filteredCate(categories){
 
         }
 
+}
+function searchBar(products){
+    const searchBar=document.getElementById("searchInput");
+    searchBar.addEventListener("input",(e)=>{
+        const query=e.target.value.toLowerCase();
+        const filteredProduct=products.filter(p=>{
+            return p.name.toLowerCase().includes(query);
+        })
+        renderProductTable(filteredProduct);
+    })
 }
 
 const btnAdd=document.getElementById("btnAdd");
