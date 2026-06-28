@@ -4,34 +4,73 @@ import { getAccessToken } from './tokenStorage.js';
 import { getNewAccessToken } from './getNewAccessToken.js';
 
 export const get = async (endpoint, retry = true) => {
-  const res = await fetch(`${API_URL}/${endpoint}`, {
-    headers: { Authorization: `Bearer ${getAccessToken()}` },
-  });
+    const res = await fetch(`${API_URL}/${endpoint}`, {
+        headers: { Authorization: `Bearer ${getAccessToken()}` },
+    });
 
-  if (res.status === 401 && retry) {            // hết hạn -> refresh rồi thử lại ĐÚNG 1 lần
-    await getNewAccessToken();
-    return get(endpoint, false);
-  }
+    if (res.status === 401 && retry) {
+        // hết hạn -> refresh rồi thử lại ĐÚNG 1 lần
+        await getNewAccessToken();
+        return get(endpoint, false);
+    }
 
-  if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
-  return res.json();
+    if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
+    return res.json();
 };
 
 export const post = async (endpoint, body, retry = true) => {
-  const res = await fetch(`${API_URL}/${endpoint}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${getAccessToken()}`,
-    },
-    body: JSON.stringify(body),
-  });
+    const res = await fetch(`${API_URL}/${endpoint}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+        body: JSON.stringify(body),
+    });
 
-  if (res.status === 401 && retry) {
-    await getNewAccessToken();
-    return post(endpoint, body, false);
-  }
+    if (res.status === 401 && retry) {
+        await getNewAccessToken();
+        return post(endpoint, body, false);
+    }
 
-  if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
-  return res.json();
+    if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
+    return res.json();
+};
+
+export const put = async (endpoint, body, retry = true) => {
+    const res = await fetch(`{API_URL}/${endpoint}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bear ${getAccessToken()}`,
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (res.status === 401 && retry) {
+        await getNewAccessToken();
+        return put(endpoint, body, false);
+    }
+
+    if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
+    return res.json();
+};
+
+export const del = async (endpoint, retry = true) => {
+    const res = await fetch(`{API_URL}/${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bear ${getAccessToken()}`,
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (res.status === 401 && retry) {
+        await getNewAccessToken();
+        return del(endpoint, false);
+    }
+
+    if (!res.ok) throw new Error(`REQUEST_FAILED_${res.status}`);
+    return res.json();
 };
