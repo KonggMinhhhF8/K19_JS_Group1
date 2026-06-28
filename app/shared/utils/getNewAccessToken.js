@@ -7,33 +7,35 @@ import { logout } from './logout.js';
 let refreshing = null;
 
 export const getNewAccessToken = async () => {
+    // Đã có 1 lần refresh đang chạy → dùng chung, không gọi mới
+    if (refreshing) return refreshing;
 
-  const refreshToken = getRefreshToken();
-  if (!refreshToken) {
-    logout();
-    throw new Error('NO_REFRESH_TOKEN');
-  }
-
-  refreshing = (async () => {
-    const res = await fetch(`${API_URL}/auth/refresh-token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
-    });
-
-    if (!res.ok) {                              // refresh token hết hạn -> về login
-      logout();
-      throw new Error('REFRESH_FAILED');
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+        logout();
+        throw new Error('NO_REFRESH_TOKEN');
     }
 
-    const data = await res.json();
-    saveTokens(data.accessToken, data.refreshToken);
-    return data.accessToken;
-  })();
+    refreshing = (async () => {
+        try {
+            const res = await fetch(`${API_URL}/auth/refresh-token`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ refreshToken }),
+            });
 
-  try {
-    return await refreshing;
-  } finally {
-    refreshing = null;                          // cho phép lần refresh sau
-  }
+            if (!res.ok) {
+                logout();
+                throw new Error('REFRESH_FAILED');
+            }
+
+            const data = await res.json();
+            saveTokens(data.accessToken, data.refreshToken);
+            return data.accessToken;
+        } finally {
+            refreshing = null; // clear sau khi refresh xong, cho phép lần sau
+        }
+    })();
+
+    return refreshing;
 };

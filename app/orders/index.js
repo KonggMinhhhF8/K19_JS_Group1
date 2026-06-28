@@ -4,9 +4,22 @@
 // renderTable()
 // handleDelete()
 
-import { getOrders } from './service.js';
+import {
+    getOrders,
+    getCustomers,
+    getProducts,
+    createOrder,
+    deleteOrder,
+} from './api.js';
 
 // ================= DOM =================
+const amountInput = document.querySelector('#amountInput');
+
+const statusSelect = document.querySelector('#statusSelect');
+
+const customerSelect = document.querySelector('#customerSelect');
+
+const productSelect = document.querySelector('#productSelect');
 
 const createBtn = document.querySelector('.btn-create');
 
@@ -24,11 +37,25 @@ const modalTitle = document.querySelector('#modalTitle');
 
 const submitBtn = document.querySelector('#submitBtn');
 
+const orderId = document.querySelector('#orderId');
+
+// load lại list sau khi call api create/ edit/ delete..
+async function loadOrders() {
+    const orders = await getOrders();
+
+    renderOrders(orders);
+}
+
 async function init() {
     try {
-        const orders = await getOrders();
+        await loadOrders();
 
-        renderOrders(orders);
+        const customers = await getCustomers();
+
+        const products = await getProducts();
+
+        renderCustomerOptions(customers);
+        renderProductOptions(products);
     } catch (error) {
         console.error(error);
         alert('Không thể tải danh sách đơn hàng');
@@ -106,11 +133,20 @@ function renderOrders(orders) {
         </tr>`;
         })
         .join('');
+    const deleteButtons = document.querySelectorAll('.btn-delete');
 }
 
 // Modal
 
-function openModal() {
+function openCreateModal() {
+    form.reset();
+
+    orderId.value = '';
+
+    modalTitle.textContent = 'Thêm đơn hàng';
+
+    submitBtn.textContent = 'Thêm';
+
     modal.classList.remove('hidden');
 }
 
@@ -118,10 +154,72 @@ function closeModal() {
     modal.classList.add('hidden');
 }
 
-createBtn.addEventListener('click', openModal);
+createBtn.addEventListener('click', openCreateModal);
 
 closeModalBtn.addEventListener('click', closeModal);
 
 cancelBtn.addEventListener('click', closeModal);
 
 overlay.addEventListener('click', closeModal);
+
+form.addEventListener('submit', handleSubmit);
+
+function renderCustomerOptions(customers) {
+    customerSelect.innerHTML = `
+    <option value="">-- Chọn khách hàng --</option>
+    ${customers
+        .map(
+            (customer) => `
+        <option value="${customer.id}">
+        ${customer.name}
+        </option>`,
+        )
+        .join('')}
+    `;
+}
+
+function renderProductOptions(products) {
+    productSelect.innerHTML = `
+    <option value="">-- Chọn sản phẩm --</option>
+    ${products
+        .map(
+            (product) => `
+        <option value ="${product.id}">
+         ${product.name} - ${product.price.toLocaleString('vi-VN')}đ
+        </option>`,
+        )
+        .join('')}
+    `;
+}
+
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    const customerId = Number(customerSelect.value);
+
+    const productId = Number(productSelect.value);
+
+    const amount = Number(amountInput.value);
+
+    const status = statusSelect.value;
+
+    const body = {
+        productId,
+        customerId,
+        amount,
+        status,
+    };
+
+    try {
+        await createOrder(body);
+
+        closeModal();
+
+        await loadOrders();
+
+        alert('Tạo đơn hàng thành công');
+    } catch (error) {
+        console.error(error);
+        alert('Tạo đơn hàng thất bại');
+    }
+}
