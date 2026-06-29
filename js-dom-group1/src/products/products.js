@@ -79,7 +79,7 @@ function renderProductTable(products){
         btnEdit.className = "btn-icon edit";
         btnEdit.innerHTML = '<i class="fas fa-edit"></i>';
         btnEdit.onclick=()=>{
-            localStorage.setItem("editingProduct",JSON.stringify(product));
+            localStorage.setItem("editingProduct",JSON.stringify(product.id));
             window.location.href="./create.html";
 
         }

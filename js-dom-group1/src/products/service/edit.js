@@ -12,14 +12,17 @@ const cateSelect = document.getElementById("filteredCate");
 
 
 const savedData = localStorage.getItem("editingProduct");
-const product = savedData ? JSON.parse(savedData) : null;
-const isEdit = product ? true : false;
+let product ;
+const isEdit = savedData ? true : false;
 
 
 async function initEditPage() {
     try {
         
         await loadCategories();
+        if(isEdit){
+            await getProductById();
+        }
 
       
         fillProductData();
@@ -33,7 +36,17 @@ async function initEditPage() {
     }
 }
 
+async function getProductById(){
+    try{
+        const idProduct=savedData ? JSON.parse(savedData) : null;
+        product=await productsService.getProductById(idProduct);
+        console.log("edit received data")
 
+    }
+    catch(error){
+        console.log("Edit was not received data ",error)
+    }
+}
 async function loadCategories() {
     if (!cateSelect) return;
     
