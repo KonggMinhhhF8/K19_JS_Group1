@@ -3,6 +3,42 @@ import { categoryService } from "./service/categoryService";
 
 let products=[];
 let categories=[];
+// render html 
+function getProductsListHTML() {
+    return `
+    <header class="flex justify-between items-center mb-[30px]">
+      <div class="flex-1 max-w-[400px]">
+        <input type="text" id="searchInput" class="w-full p-3 border border-gray-300 rounded-lg outline-none focus:border-primary" placeholder="Tìm tên sản phẩm, mã SKU..."/>
+      </div>
+      <div>
+        <button id="btnAdd" class="bg-primary text-white p-3 px-5 rounded-lg font-semibold hover:opacity-90 transition">
+          <i class="fas fa-plus"></i> Thêm sản phẩm
+        </button>
+      </div>
+    </header>
+
+    <section class="grid grid-cols-3 gap-5 mb-[25px]">
+      <div class="bg-white p-5 rounded-xl shadow-sm"><h3 class="text-gray-500 text-sm">Tổng sản phẩm</h3><p id="totalProduct" class="text-2xl font-bold mt-1">0</p></div>
+      <div class="bg-white p-5 rounded-xl shadow-sm"><h3 class="text-gray-500 text-sm">Sắp hết hàng</h3><p id="lowStock" class="text-2xl font-bold text-red-500 mt-1">0</p></div>
+      <div class="bg-white p-5 rounded-xl shadow-sm"><h3 class="text-gray-500 text-sm">Danh mục</h3><p id="totalCate" class="text-2xl font-bold mt-1">0</p></div>
+    </section>
+
+    <section class="bg-white rounded-xl shadow-sm p-5">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-dark">Danh mục sản phẩm</h3>
+        <select id="cateFiltered" class="p-2 border border-gray-300 rounded-lg outline-none"></select>
+      </div>
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-50 text-left text-gray-500 text-sm border-b border-gray-200">
+            <th class="p-3">Hình</th><th class="p-3">Thông tin sản phẩm</th><th class="p-3">Danh mục</th><th class="p-3">Giá bán</th><th class="p-3">Tồn kho</th><th class="p-3">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+      </table>
+    </section>
+    `;
+}
 // init function
 async function initProductPage() {
     try{
@@ -12,6 +48,11 @@ async function initProductPage() {
         renderProductTable(products);
         filteredCate(categories);
         searchBar(products);
+        document.getElementById("btnAdd").onclick = () => {
+            localStorage.removeItem("editingProduct");
+            router.navigate("/products/create");
+        };
+
         console.log("init thành cống")
 
     }
@@ -80,7 +121,7 @@ function renderProductTable(products){
         btnEdit.innerHTML = '<i class="fas fa-edit"></i>';
         btnEdit.onclick=()=>{
             localStorage.setItem("editingProduct",JSON.stringify(product.id));
-            window.location.href="./create.html";
+            router.navigate("/products/create")
 
         }
         // btn delete
@@ -161,9 +202,14 @@ function searchBar(products){
     })
 }
 
-const btnAdd=document.getElementById("btnAdd");
-    btnAdd.onclick=()=>{
-        localStorage.removeItem("editingProduct");
-        window.location.href="./create.html";
+
+
+export function renderProductPage(router){
+    renderSidebar("products",router);
+    const mainContainer=document.getElementById("main-content");
+    if(mainContainer){
+        mainContainer.innerHTML= getProductsListHTML();
     }
-initProductPage();
+    initProductPage();
+
+}

@@ -1,9 +1,49 @@
 import axios from 'axios';
-import {token} from './config/token';
+import {token} from '../config/token';
+import { renderSidebar } from '../utils/sidebar';
 const api='https://wo365ovs53.execute-api.ap-southeast-1.amazonaws.com/orders'
 // đợi xong login sẽ có token lấy từ local storage 
 // const token=localStorage.getItem("accessToken");
-// const accessToken="eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJrMTgtc3RvcmUiLCJzdWIiOiIxIiwiZXhwIjoxNzgyMTk2MDQwLCJ0eXBlIjoiYWNjZXNzIiwiaWF0IjoxNzgyMTk1NDQwLCJlbWFpbCI6ImJhbmd0eEB0ZXN0LmNvbSJ9.WqmOPVkN6zkceGNwUX8zdVPM4RZNgxlRhfI509U0qX8"
+
+function getHomeContentHTML() {
+    return `
+    <header class="flex justify-between items-center bg-white p-[15px] px-[20px] rounded-[10px] mb-[25px] shadow-[0_2px_10px_rgba(0,0,0,0.05)]">
+      <div class="user">
+        <strong>Admin</strong> <i class="fas fa-user-circle"></i>
+      </div>
+    </header>
+
+    <section class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-5 mb-[25px]">
+      <div class="bg-white p-5 rounded-[12px] shadow-[0_4px_6px_rgba(0,0,0,0.02)]">
+        <h3 class="text-xs text-[#7f8c8d] uppercase tracking-wider">Doanh thu</h3>
+        <p id="revenue" class="text-2xl font-bold mt-[5px]">Đang tải...</p>
+      </div>
+      <div class="bg-white p-5 rounded-[12px] shadow-[0_4px_6px_rgba(0,0,0,0.02)]">
+        <h3 class="text-xs text-[#7f8c8d] uppercase tracking-wider">Đơn mới</h3>
+        <p id="newOrders" class="text-2xl font-bold mt-[5px]">Đang tải...</p>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-[12px] shadow-[0_4px_6px_rgba(0,0,0,0.02)] flex flex-col max-h-[400px]">
+      <div class="p-5 bg-white rounded-t-[12px] border-b border-[#eee] sticky top-0 z-10">
+        <h3 class="font-bold text-[#2c3e50]">Đơn hàng gần đây</h3>
+      </div>
+      <div class="overflow-y-auto overflow-x-auto flex-1">
+        <table class="w-full border-collapse min-w-[600px]">
+          <thead>
+            <tr class="bg-[#f8f9fa] text-left text-[#7f8c8d] text-[0.85rem] border-b-2 border-[#eee]">
+              <th class="p-[15px] sticky top-0 bg-[#f8f9fa] z-5">Mã đơn</th>
+              <th class="p-[15px] sticky top-0 bg-[#f8f9fa] z-5">Khách hàng</th>
+              <th class="p-[15px] sticky top-0 bg-[#f8f9fa] z-5">Trạng thái</th>
+              <th class="p-[15px] sticky top-0 bg-[#f8f9fa] z-5">Tổng tiền</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+    `;
+}
 async function fetchOrders() {
     try{
         const res=await axios.get(api,{
@@ -81,4 +121,11 @@ function render(orders){
 
     })
 }
-fetchOrders();
+export function renderHomeLayout(router){
+  renderSidebar("home",router);
+  const mainConTainer= document.getElementById("main-content");
+  if(mainContainer){
+    mainConTainer.innerHTML=getHomeContentHTML();
+  }
+  fetchOrders();
+}
