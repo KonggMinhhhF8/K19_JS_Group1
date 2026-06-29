@@ -431,10 +431,16 @@
                 <section class="table-container">
                     <div class="order-controls">
                         <div class="tabs">
-                            <button class="tab active">Tất cả</button>
-                            <button class="tab">Chờ xử lý</button>
-                            <button class="tab">Đang giao</button>
-                            <button class="tab">Đã xong</button>
+                            <button id="filterAll" class="tab active">
+                                Tất cả
+                            </button>
+                            <button id="filterPending" class="tab">
+                                Chờ xử lý
+                            </button>
+                            <button id="filterDelivering" class="tab">
+                                Đang giao
+                            </button>
+                            <button id="filterDone" class="tab">Đã xong</button>
                         </div>
                         <div class="date-filter">
                             <input
@@ -576,7 +582,7 @@
                 </div>
 
                 <form id="orderForm">
-                    <input type="hidden" id="orderId">
+                    <input type="hidden" id="orderId" />
                     <div class="form-group">
                         <label for="customerSelect"> Khách hàng </label>
 

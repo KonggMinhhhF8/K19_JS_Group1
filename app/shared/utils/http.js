@@ -38,11 +38,11 @@ export const post = async (endpoint, body, retry = true) => {
 };
 
 export const put = async (endpoint, body, retry = true) => {
-    const res = await fetch(`{API_URL}/${endpoint}`, {
+    const res = await fetch(`${API_URL}/${endpoint}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bear ${getAccessToken()}`,
+            Authorization: `Bearer ${getAccessToken()}`,
         },
         body: JSON.stringify(body),
     });
@@ -57,13 +57,12 @@ export const put = async (endpoint, body, retry = true) => {
 };
 
 export const del = async (endpoint, retry = true) => {
-    const res = await fetch(`{API_URL}/${endpoint}`, {
+    const res = await fetch(`${API_URL}/${endpoint}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bear ${getAccessToken()}`,
+            Authorization: `Bearer ${getAccessToken()}`,
         },
-        body: JSON.stringify(body),
     });
 
     if (res.status === 401 && retry) {
