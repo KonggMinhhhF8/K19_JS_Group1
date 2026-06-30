@@ -124,7 +124,8 @@ function render(orders){
 export function renderHomeLayout(router){
   renderSidebar("home",router);
   const mainConTainer= document.getElementById("main-content");
-  if(mainContainer){
+  if(mainConTainer){
+    mainConTainer.className = "flex-1 p-6 w-full min-h-screen bg-[#f4f7f6]";
     mainConTainer.innerHTML=getHomeContentHTML();
   }
   fetchOrders();

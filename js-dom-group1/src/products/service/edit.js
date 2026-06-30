@@ -12,7 +12,7 @@ const cateSelect = document.getElementById("filteredCate");
 
 
 const savedData = localStorage.getItem("editingProduct");
-let product ;
+let currentProduct ;
 const isEdit = savedData ? true : false;
 
 // render html 
@@ -99,8 +99,7 @@ async function initEditPage(router) {
         if (isEdit) {
             const idProduct = JSON.parse(savedData);
             currentProduct = await productsService.getProductById(idProduct);
-            
-          
+            // lưu í thẻ form dùng value nhé đug có mà innerText hay innerHTML
             if (nameInput) nameInput.value = currentProduct?.name || "";
             if (priceInput) priceInput.value = currentProduct?.price || 0;
             if (costPriceInput) costPriceInput.value = 0;
