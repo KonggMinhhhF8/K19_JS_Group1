@@ -3,7 +3,7 @@ import { login } from '../shared/utils/index.js';
 import { validateLoginForm } from './validators.js';
 import { showError, clearError, markField, setLoading, togglePassword } from './ui.js';
 
-const REDIRECT_AFTER_LOGIN = '/app/index.html';
+const REDIRECT_AFTER_LOGIN = '/index.html';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form       = document.getElementById('loginForm');
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2) Gọi API đăng nhập
     try {
     await login(email.trim(), password);          // thành công -> tự lưu token
-      window.location.href = "../index.html";
+      window.location.href = REDIRECT_AFTER_LOGIN;
     } catch (err) {
       const m = String(err.message);
       let msg = 'Đăng nhập thất bại. Vui lòng thử lại.';
