@@ -1,3 +1,4 @@
+<<<<<<< HEAD:app/main.js
 import Navigo from "https://esm.sh/navigo@8";
 import { renderMainLayout } from "./customers/main.js";
 import { renderHomeLayout } from "./home/main.js";
@@ -28,6 +29,9 @@ router
   .on("/customers", () => {
     if (checkAuth()) renderMainLayout(router);
   })
+  router.on("/products/create", () => {
+  renderEditProductPage(router);
+});
   .on("/reports", () => {
     if (checkAuth()) renderReportLayout(router);
   })
@@ -37,3 +41,27 @@ router
   .resolve();
 
 console.log("Router đã chạy và đang bảo vệ trang!");
+=======
+import { renderHomeLayout } from "./src/Home/home.js";
+import { renderProductPage } from "./src/products/products.js";
+import { renderEditProductPage } from "./src/products/service/edit.js";
+
+const router = new Navigo("/", { hash: true });
+
+router.on("/", () => {
+  renderHomeLayout(router);
+});
+router.on("/products", () => {
+  renderProductPage(router);
+});
+router.on("/products/create", () => {
+  renderEditProductPage(router);
+});
+
+// SỬA Ở ĐÂY: Dùng notFound thay vì "*"
+router.notFound(() => {
+  renderHomeLayout(router);
+});
+
+router.resolve();
+>>>>>>> 07e6fcb76a6e193d9b343b38d2b307fe29220f10:js-dom-group1/main.js
