@@ -10,6 +10,7 @@ import {
 } from "./handlers.js";
 
 export const renderMainLayout = async (router) => {
+  const mainContainer = document.getElementById("main-content");
   document.body.setAttribute("data-page", "customers");
   document.body.className = "bg-bgLight font-sans text-gray-800";
   document.body.innerHTML = "";
@@ -93,7 +94,8 @@ export const renderMainLayout = async (router) => {
   main.appendChild(sectionTable);
 
   wrapper.appendChild(main);
-  document.body.appendChild(wrapper);
+  mainContainer.appendChild(wrapper);
+  document.body.appendChild(mainContainer);
   renderSidebar("customers", router);
   await renderCustomerTable();
   await initPage();
