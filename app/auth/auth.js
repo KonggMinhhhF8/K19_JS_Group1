@@ -1,3 +1,5 @@
+import { router } from "../main.js";
+
 const login = async (email, password) => {
   try {
     const response = await fetch(
@@ -38,9 +40,9 @@ const handelLogin = async () => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      window.location.href =
-        "http://127.0.0.1:5500/K19_JS_Group1/app/index.html";
-      // router.navigate("/home");
+      // window.location.href =
+      //   "http://127.0.0.1:5500/K19_JS_Group1/app/index.html";
+      router.navigate("/customers");
     }
   });
 };

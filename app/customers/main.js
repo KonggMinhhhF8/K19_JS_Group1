@@ -5,6 +5,8 @@ import {
   handleAddCustomer,
   handleDeleteCustomer,
   handleEditCustomer,
+  handleSearchCustomers,
+  handleGetTotalCustomers,
 } from "./handlers.js";
 
 export const renderMainLayout = async (router) => {
@@ -93,10 +95,15 @@ export const renderMainLayout = async (router) => {
   wrapper.appendChild(main);
   document.body.appendChild(wrapper);
   renderSidebar("customers", router);
-  renderCustomerTable();
+  await renderCustomerTable();
+  await initPage();
   renderForm();
   setupModalEvents();
   handleAddCustomer();
+  searchInput.addEventListener("input", (e) => {
+    handleSearchCustomers(e.target);
+  });
+  handleGetTotalCustomers();
 };
 const setupModalEvents = () => {
   const btnOpen = document.getElementById("btnOpenAddModal");
@@ -122,6 +129,7 @@ const tableData = [
 ];
 export const renderCustomerTable = async (data) => {
   const tableContainer = document.getElementById("tableContainer");
+  if (!tableContainer) return;
   tableContainer.innerHTML = "";
 
   const table = document.createElement("table");
@@ -194,9 +202,9 @@ export const renderCustomerTable = async (data) => {
 
 export const initPage = async () => {
   try {
-    const data = await getCustomersWithOrders(); // Lấy dữ liệu
+    const data = await getCustomersWithOrders();
     console.log("Đang vẽ bảng với:", data);
-    renderCustomerTable(data); // Đổ dữ liệu vào bảng
+    renderCustomerTable(data);
   } catch (error) {
     console.error("Lỗi khởi tạo trang:", error);
   }

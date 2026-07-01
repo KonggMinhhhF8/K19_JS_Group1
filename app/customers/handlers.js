@@ -114,3 +114,24 @@ export const handleEditCustomer = async (customerId, customerName) => {
     }
   });
 };
+
+export const handleSearchCustomers = async (searchInput) => {
+  const searchValue = searchInput.value.toLowerCase();
+
+  const data = await getCustomersWithOrders();
+  const safeData = Array.isArray(data) ? data : [];
+
+  const filteredCustomers = safeData.filter((customer) => {
+    const name = (customer.name || "").toLowerCase();
+    const email = (customer.email || "").toLowerCase();
+    return name.includes(searchValue) || email.includes(searchValue);
+  });
+
+  renderCustomerTable(filteredCustomers);
+};
+
+export const handleGetTotalCustomers = async () => {
+  const data = await getCustomersWithOrders();
+  const totalCustomers = data.length;
+  document.getElementById("totalCustomers").innerText = totalCustomers;
+};
