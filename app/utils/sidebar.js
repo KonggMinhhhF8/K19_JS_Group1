@@ -1,5 +1,5 @@
 const sidebars = [
-  { key: "home", value: "Tổng quan", icon: "fas fa-home", path: "/" },
+  { key: "home", value: "Tổng quan", icon: "fas fa-home", path: "/home" },
   { key: "products", value: "Sản phẩm", icon: "fas fa-box", path: "/products" },
   {
     key: "orders",

@@ -5,25 +5,35 @@ import { renderReportLayout } from "./reports/main.js";
 
 export const router = new Navigo("/", { hash: true });
 
+// 1. Hàm kiểm tra quyền truy cập
+const checkAuth = () => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    // Nếu không có token, đẩy về trang login
+    window.location.href =
+      "/data/codeSpace/Code/JavaScript/K19_JS_Group1/app/auth/login.html";
+    return false;
+  }
+  return true;
+};
+
+// 2. Cấu hình lại các route với checkAuth
 router
   .on("/", () => {
-    // Luôn đưa về trang chủ (ví dụ: Customer) khi truy cập gốc
-    renderMainLayout(router);
+    if (checkAuth()) renderMainLayout(router);
   })
   .on("/home", () => {
-    // 💡 ĐÃ BỔ SUNG: Xử lý khi gọi router.navigate("/home")
-    renderMainLayout(router);
+    if (checkAuth()) renderHomeLayout(router);
   })
   .on("/customers", () => {
-    renderMainLayout(router);
+    if (checkAuth()) renderMainLayout(router);
   })
   .on("/reports", () => {
-    renderReportLayout(router);
+    if (checkAuth()) renderReportLayout(router);
   })
   .notFound(() => {
-    // Nếu vào đường dẫn không tồn tại, quay về trang mặc định
-    router.navigate("/");
+    if (checkAuth()) router.navigate("/");
   })
   .resolve();
 
-console.log("Router đã chạy!");
+console.log("Router đã chạy và đang bảo vệ trang!");

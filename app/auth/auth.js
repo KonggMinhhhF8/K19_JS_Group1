@@ -1,5 +1,3 @@
-import { router } from "../main.js";
-
 const login = async (email, password) => {
   try {
     const response = await fetch(
@@ -20,7 +18,8 @@ const login = async (email, password) => {
       console.log(error);
       return null;
     }
-    return (data = await response.json());
+    const data = await response.json();
+    return data;
   } catch (e) {
     console.log(e);
   }
@@ -28,6 +27,10 @@ const login = async (email, password) => {
 
 const handelLogin = async () => {
   const loginForm = document.getElementById("loginForm");
+  if (!loginForm) {
+    console.log("Không tìm thấy form đăng nhập trên trang này, bỏ qua...");
+    return;
+  }
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = document.getElementById("username").value;
@@ -40,9 +43,9 @@ const handelLogin = async () => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      // window.location.href =
-      //   "http://127.0.0.1:5500/K19_JS_Group1/app/index.html";
-      router.navigate("/customers");
+      window.location.href = "http://127.0.0.1:5500/app/index.html";
+    } else {
+      console.log("Đăng nhập thất bại");
     }
   });
 };
