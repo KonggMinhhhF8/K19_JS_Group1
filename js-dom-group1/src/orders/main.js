@@ -12,7 +12,7 @@ import {
   deleteOrder,
   updateOrder,
 } from "./api.js";
-
+import {renderSidebar} from  "../shared/utils/sidebar.js";
 import { getNewAccessToken } from "../shared/utils/getNewAccessToken.js";
 
 // ================= DOM =================

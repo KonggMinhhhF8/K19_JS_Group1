@@ -17,7 +17,7 @@ const checkAuth = () => {
   if (!token) {
     // Nếu không có token, đẩy về trang login
     window.location.href =
-      "/data/codeSpace/Code/JavaScript/K19_JS_Group1/app/auth/login.html";
+      "./src/login/index.html";
     return false;
   }
   return true;
