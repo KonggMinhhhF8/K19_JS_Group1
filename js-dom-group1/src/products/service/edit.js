@@ -1,6 +1,6 @@
 import { productsService } from "./productService";
 import { categoryService } from "./categoryService";
-import { renderSidebar } from "../../utils/sidebar";
+import { renderSidebar } from "../../shared/utils/sidebar";
 
 const form = document.getElementById("productForm");
 const nameInput = document.getElementById("nameProduct");
@@ -10,17 +10,16 @@ const skuInput = document.getElementById("sku");
 const remainingInput = document.getElementById("remaining");
 const cateSelect = document.getElementById("filteredCate");
 
-
 const savedData = localStorage.getItem("editingProduct");
-let currentProduct ;
+let currentProduct;
 const isEdit = savedData ? true : false;
 
-// render html 
+// render html
 function getEditFormHTML(isEdit) {
-    return `
+  return `
     <div class="flex justify-between items-center mb-[30px]">
       <button id="btnBack" class="text-gray-500 font-medium hover:text-dark"><i class="fas fa-arrow-left"></i> Quay lại danh sách</button>
-      <h2 class="text-xl font-bold">${isEdit ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới'}</h2>
+      <h2 class="text-xl font-bold">${isEdit ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}</h2>
     </div>
 
     <form id="productForm">
@@ -72,97 +71,94 @@ function getEditFormHTML(isEdit) {
     `;
 }
 async function initEditPage(router) {
-    const savedData = localStorage.getItem("editingProduct");
-    const isEdit = !!savedData;
+  const savedData = localStorage.getItem("editingProduct");
+  const isEdit = !!savedData;
 
-    const nameInput = document.getElementById("nameProduct");
-    const priceInput = document.getElementById("sellingPrice");
-    const costPriceInput = document.getElementById("costPrice");
-    const skuInput = document.getElementById("sku");
-    const remainingInput = document.getElementById("remaining");
-    const cateSelect = document.getElementById("filteredCate");
-    const form = document.getElementById("productForm");
+  const nameInput = document.getElementById("nameProduct");
+  const priceInput = document.getElementById("sellingPrice");
+  const costPriceInput = document.getElementById("costPrice");
+  const skuInput = document.getElementById("sku");
+  const remainingInput = document.getElementById("remaining");
+  const cateSelect = document.getElementById("filteredCate");
+  const form = document.getElementById("productForm");
 
-    try {
-        // Tải toàn bộ danh mục đổ vào thẻ Select trước
-        const categoriesList = await categoryService.getAllCategory();
-        if (cateSelect) {
-            cateSelect.innerHTML = "";
-            categoriesList.forEach(cate => {
-                const option = document.createElement("option");
-                option.value = cate.id;
-                option.innerText = cate.name;
-                cateSelect.appendChild(option);
-            });
-        }
-
-        if (isEdit) {
-            const idProduct = JSON.parse(savedData);
-            currentProduct = await productsService.getProductById(idProduct);
-            // lưu í thẻ form dùng value nhé đug có mà innerText hay innerHTML
-            if (nameInput) nameInput.value = currentProduct?.name || "";
-            if (priceInput) priceInput.value = currentProduct?.price || 0;
-            if (costPriceInput) costPriceInput.value = 0;
-            if (skuInput) skuInput.value = currentProduct?.sku || "";
-            if (remainingInput) remainingInput.value = currentProduct?.remaining || 0;
-            if (cateSelect && currentProduct?.category?.id) {
-                cateSelect.value = currentProduct.category.id;
-            }
-        } else {
-            
-            if (nameInput) nameInput.value = "";
-            if (priceInput) priceInput.value = "";
-            if (costPriceInput) costPriceInput.value = 0;
-            if (skuInput) skuInput.value = "SKU-" + Math.floor(Math.random() * 10000);
-            if (remainingInput) remainingInput.value = "";
-        }
-
-        
-        if (form) {
-            form.onsubmit = async (e) => {
-                e.preventDefault();
-                const updatedData = {
-                    categoryId: cateSelect ? Number(cateSelect.value) : 11,
-                    imageId: currentProduct?.imageUrl || "",
-                    name: nameInput.value,
-                    sku: skuInput.value,
-                    price: Number(priceInput.value),
-                    remaining: Number(remainingInput.value),
-                };
-
-                try {
-                    if (isEdit) {
-                        await productsService.putProduct(currentProduct.id, updatedData);
-                        alert("Cập nhật sản phẩm thành công!");
-                        localStorage.removeItem("editingProduct");
-                    } else {
-                        await productsService.createProduct(updatedData);
-                        alert("Thêm mới sản phẩm thành công");
-                    }
-                    router.navigate("/products");
-                } catch (err) {
-                    console.log("Lỗi không lưu được dữ liệu ", err);
-                }
-            };
-        }
-
-        
-        document.getElementById("btnBack").onclick = () => router.navigate("/products");
-        document.getElementById("btnCancel").onclick = () => router.navigate("/products");
-
-    } catch (error) {
-        console.log("Lỗi tải trang cấu hình biểu mẫu ", error);
+  try {
+    // Tải toàn bộ danh mục đổ vào thẻ Select trước
+    const categoriesList = await categoryService.getAllCategory();
+    if (cateSelect) {
+      cateSelect.innerHTML = "";
+      categoriesList.forEach((cate) => {
+        const option = document.createElement("option");
+        option.value = cate.id;
+        option.innerText = cate.name;
+        cateSelect.appendChild(option);
+      });
     }
+
+    if (isEdit) {
+      const idProduct = JSON.parse(savedData);
+      currentProduct = await productsService.getProductById(idProduct);
+      // lưu í thẻ form dùng value nhé đug có mà innerText hay innerHTML
+      if (nameInput) nameInput.value = currentProduct?.name || "";
+      if (priceInput) priceInput.value = currentProduct?.price || 0;
+      if (costPriceInput) costPriceInput.value = 0;
+      if (skuInput) skuInput.value = currentProduct?.sku || "";
+      if (remainingInput) remainingInput.value = currentProduct?.remaining || 0;
+      if (cateSelect && currentProduct?.category?.id) {
+        cateSelect.value = currentProduct.category.id;
+      }
+    } else {
+      if (nameInput) nameInput.value = "";
+      if (priceInput) priceInput.value = "";
+      if (costPriceInput) costPriceInput.value = 0;
+      if (skuInput) skuInput.value = "SKU-" + Math.floor(Math.random() * 10000);
+      if (remainingInput) remainingInput.value = "";
+    }
+
+    if (form) {
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const updatedData = {
+          categoryId: cateSelect ? Number(cateSelect.value) : 11,
+          imageId: currentProduct?.imageUrl || "",
+          name: nameInput.value,
+          sku: skuInput.value,
+          price: Number(priceInput.value),
+          remaining: Number(remainingInput.value),
+        };
+
+        try {
+          if (isEdit) {
+            await productsService.putProduct(currentProduct.id, updatedData);
+            alert("Cập nhật sản phẩm thành công!");
+            localStorage.removeItem("editingProduct");
+          } else {
+            await productsService.createProduct(updatedData);
+            alert("Thêm mới sản phẩm thành công");
+          }
+          router.navigate("/products");
+        } catch (err) {
+          console.log("Lỗi không lưu được dữ liệu ", err);
+        }
+      };
+    }
+
+    document.getElementById("btnBack").onclick = () =>
+      router.navigate("/products");
+    document.getElementById("btnCancel").onclick = () =>
+      router.navigate("/products");
+  } catch (error) {
+    console.log("Lỗi tải trang cấu hình biểu mẫu ", error);
+  }
 }
 
-
 export function renderEditProductPage(router) {
-    renderSidebar('products', router);
-    const mainContent = document.getElementById("main-content");
-    if (mainContent) {
-        mainContent.className = "flex-1 p-6 w-full min-h-screen bg-[#f4f7f6]";
-        const isEdit = !!localStorage.getItem("editingProduct");
-        mainContent.innerHTML = getEditFormHTML(isEdit);
-        initEditPage(router);
-    }
+  renderSidebar("products", router);
+  const mainContent = document.getElementById("main-content");
+  if (mainContent) {
+    mainContent.className = "flex-1 p-6 w-full min-h-screen bg-[#f4f7f6]";
+    const isEdit = !!localStorage.getItem("editingProduct");
+    mainContent.innerHTML = getEditFormHTML(isEdit);
+    initEditPage(router);
+  }
 }

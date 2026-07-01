@@ -1,9 +1,14 @@
-<<<<<<< HEAD:app/main.js
 import Navigo from "https://esm.sh/navigo@8";
-import { renderMainLayout } from "./customers/main.js";
-import { renderHomeLayout } from "./home/main.js";
-import { renderReportLayout } from "./reports/main.js";
+import { renderMainLayout } from "./src/customers/main.js";
+import { renderReportLayout } from "./src/reports/main.js";
+//
+import { renderHomeLayout } from "./src/Home/home.js";
+import { renderProductPage } from "./src/products/products.js";
+import { renderEditProductPage } from "./src/products/service/edit.js";
+//
+import { initOrders } from './app/orders/main.js';
 
+//
 export const router = new Navigo("/", { hash: true });
 
 // 1. Hàm kiểm tra quyền truy cập
@@ -21,7 +26,7 @@ const checkAuth = () => {
 // 2. Cấu hình lại các route với checkAuth
 router
   .on("/", () => {
-    if (checkAuth()) renderMainLayout(router);
+    if (checkAuth()) renderHomeLayout(router);
   })
   .on("/home", () => {
     if (checkAuth()) renderHomeLayout(router);
@@ -29,9 +34,16 @@ router
   .on("/customers", () => {
     if (checkAuth()) renderMainLayout(router);
   })
-  router.on("/products/create", () => {
-  renderEditProductPage(router);
-});
+  .on("/products", () => {
+    renderProductPage(router);
+  })
+  .on("/products/create", () => {
+    renderEditProductPage(router);
+  })
+  .on("/orders", () => {
+    document.getElementById("app").innerHTML = OrdersPage();
+    initOrders();
+  })
   .on("/reports", () => {
     if (checkAuth()) renderReportLayout(router);
   })
@@ -41,27 +53,3 @@ router
   .resolve();
 
 console.log("Router đã chạy và đang bảo vệ trang!");
-=======
-import { renderHomeLayout } from "./src/Home/home.js";
-import { renderProductPage } from "./src/products/products.js";
-import { renderEditProductPage } from "./src/products/service/edit.js";
-
-const router = new Navigo("/", { hash: true });
-
-router.on("/", () => {
-  renderHomeLayout(router);
-});
-router.on("/products", () => {
-  renderProductPage(router);
-});
-router.on("/products/create", () => {
-  renderEditProductPage(router);
-});
-
-// SỬA Ở ĐÂY: Dùng notFound thay vì "*"
-router.notFound(() => {
-  renderHomeLayout(router);
-});
-
-router.resolve();
->>>>>>> 07e6fcb76a6e193d9b343b38d2b307fe29220f10:js-dom-group1/main.js

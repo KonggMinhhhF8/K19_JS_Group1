@@ -1,5 +1,5 @@
 import { getOrders } from "../customers/api.js";
-import { renderSidebar } from "../utils/sidebar.js";
+import { renderSidebar } from "../../utils/sidebar.js";
 import Chart from "https://cdn.jsdelivr.net/npm/chart.js/auto/+esm";
 export const renderReportLayout = async (router) => {
   document.body.setAttribute("data-page", "reports");
