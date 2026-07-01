@@ -1,5 +1,5 @@
 import { getCustomers, getOrders, getCustomersWithOrders } from "./api.js";
-import { renderSidebar } from "../../utils/sidebar.js";
+import { renderSidebar } from "../shared/utils/sidebar.js";
 import { renderForm } from "./form.js";
 import {
   handleAddCustomer,

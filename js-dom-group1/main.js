@@ -6,7 +6,7 @@ import { renderHomeLayout } from "./src/Home/home.js";
 import { renderProductPage } from "./src/products/products.js";
 import { renderEditProductPage } from "./src/products/service/edit.js";
 //
-import { initOrders } from './app/orders/main.js';
+import { initOrders } from './src/orders/main.js';
 
 //
 export const router = new Navigo("/", { hash: true });
