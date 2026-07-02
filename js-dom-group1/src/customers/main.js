@@ -12,9 +12,14 @@ import {
 export const renderMainLayout = async (router) => {
   const mainContainer = document.getElementById("main-content");
   document.body.setAttribute("data-page", "customers");
-  document.body.className = "bg-bgLight font-sans text-gray-800";
-  document.body.innerHTML = "";
-
+  // document.body.className = "bg-bgLight font-sans text-gray-800";
+  // document.body.innerHTML = "";
+  const mainContent = document.getElementById("main-content");
+  if (!mainContent) {
+    console.error("Không tìm thấy phần tử main-content!");
+    return;
+  }
+  mainContent.innerHTML = "";
   const wrapper = document.createElement("div");
   wrapper.className = "flex min-h-screen";
 
@@ -95,7 +100,8 @@ export const renderMainLayout = async (router) => {
 
   wrapper.appendChild(main);
   mainContainer.appendChild(wrapper);
-  document.body.appendChild(mainContainer);
+  // document.body.appendChild(mainContainer);
+  mainContent.appendChild(wrapper);
   renderSidebar("customers", router);
   await renderCustomerTable();
   await initPage();
@@ -107,6 +113,7 @@ export const renderMainLayout = async (router) => {
   });
   handleGetTotalCustomers();
 };
+
 const setupModalEvents = () => {
   const btnOpen = document.getElementById("btnOpenAddModal");
   const modal = document.getElementById("modal");

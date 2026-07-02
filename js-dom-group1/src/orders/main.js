@@ -12,7 +12,7 @@ import {
   deleteOrder,
   updateOrder,
 } from "./api.js";
-import {renderSidebar} from  "../shared/utils/sidebar.js";
+import { renderSidebar } from "../shared/utils/sidebar.js";
 import { getNewAccessToken } from "../shared/utils/getNewAccessToken.js";
 
 // ================= DOM =================
@@ -459,10 +459,16 @@ function activeTab(button) {
   button.classList.add("active");
 }
 
-export async function initOrders() {
+export async function initOrders(router) {
+  // 1. Dựng khung DOM trước
   initDOM();
 
-  addEvents();
-
+  // 2. Chờ dữ liệu xong mới gắn sự kiện và render giao diện
   await init();
+
+  // 3. Lúc này chắc chắn DOM đã có các phần tử cần thiết
+  renderSidebar("orders", router);
+
+  // 4. Gắn các sự kiện cho bảng sau cùng
+  addEvents();
 }

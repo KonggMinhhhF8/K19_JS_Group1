@@ -5,8 +5,13 @@ export const renderReportLayout = async (router) => {
   document.body.setAttribute("data-page", "reports");
 
   document.body.className = "bg-bgLight font-sans text-gray-800";
-  document.body.innerHTML = "";
-
+  // document.body.innerHTML = "";
+  const mainContent = document.getElementById("main-content");
+  if (!mainContent) {
+    console.error("Không tìm thấy phần tử main-content!");
+    return;
+  }
+  mainContent.innerHTML = "";
   const wrapper = document.createElement("div");
   wrapper.className = "flex min-h-screen container-fluid";
 
@@ -85,7 +90,7 @@ export const renderReportLayout = async (router) => {
   `;
 
   wrapper.appendChild(main);
-  document.body.appendChild(wrapper);
+  mainContent.appendChild(wrapper);
 
   renderSidebar("reports", router);
 

@@ -6,8 +6,8 @@ import { renderHomeLayout } from "./src/Home/home.js";
 import { renderProductPage } from "./src/products/products.js";
 import { renderEditProductPage } from "./src/products/service/edit.js";
 //
-import { initOrders } from './src/orders/main.js';
-
+import { initOrders } from "./src/orders/main.js";
+import { OrdersPage } from "./src/orders/index.js";
 //
 export const router = new Navigo("/", { hash: true });
 
@@ -16,8 +16,7 @@ const checkAuth = () => {
   const token = localStorage.getItem("accessToken");
   if (!token) {
     // Nếu không có token, đẩy về trang login
-    window.location.href =
-      "./src/login/index.html";
+    window.location.href = "./src/login/index.html";
     return false;
   }
   return true;
@@ -41,8 +40,8 @@ router
     renderEditProductPage(router);
   })
   .on("/orders", () => {
-    document.getElementById("app").innerHTML = OrdersPage();
-    initOrders();
+    document.getElementById("main-content").innerHTML = OrdersPage();
+    initOrders(router);
   })
   .on("/reports", () => {
     if (checkAuth()) renderReportLayout(router);

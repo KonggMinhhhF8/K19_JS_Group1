@@ -1,22 +1,9 @@
-import './style.css';
-
-export default function OrdersPage() {
-    return `
+import "./style.css";
+import { renderSidebar } from "../shared/utils/sidebar.js";
+export function OrdersPage() {
+  return `
     <div class="container">
-            <aside class="sidebar">
-                <h2>ShopAdmin</h2>
-                <ul>
-                    <li><i class="fas fa-home"></i> Tổng quan</li>
-                    <li><i class="fas fa-box"></i> Sản phẩm</li>
-                    <li class="active">
-                        <i class="fas fa-shopping-cart"></i> Đơn hàng
-                    </li>
-                    <li><i class="fas fa-users"></i> Khách hàng</li>
-                    <li><i class="fas fa-chart-line"></i> Báo cáo</li>
-                </ul>
-            </aside>
-
-            <main class="main-content">
+            <main class="main-content2">
                 <header>
                     <div class="search-bar">
                         <input
