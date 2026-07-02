@@ -13,7 +13,6 @@ import {
   updateOrder,
 } from "./api.js";
 import { renderSidebar } from "../shared/utils/sidebar.js";
-import { getNewAccessToken } from "../shared/utils/getNewAccessToken.js";
 
 // ================= DOM =================
 let amountInput;
@@ -124,8 +123,6 @@ async function init() {
   } catch (error) {
     console.error(error);
     alert("Không thể tải danh sách đơn hàng");
-
-    getNewAccessToken();
   }
 }
 

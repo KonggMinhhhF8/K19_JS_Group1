@@ -1,14 +1,5 @@
 import Navigo from "https://esm.sh/navigo@8";
-import { renderMainLayout } from "./src/customers/main.js";
-import { renderReportLayout } from "./src/reports/main.js";
-//
-import { renderHomeLayout } from "./src/Home/home.js";
-import { renderProductPage } from "./src/products/products.js";
-import { renderEditProductPage } from "./src/products/service/edit.js";
-//
-import { initOrders } from "./src/orders/main.js";
-import { OrdersPage } from "./src/orders/index.js";
-//
+
 export const router = new Navigo("/", { hash: true });
 
 // 1. Hàm kiểm tra quyền truy cập
@@ -22,33 +13,46 @@ const checkAuth = () => {
   return true;
 };
 
-// 2. Cấu hình lại các route với checkAuth
-router
-  .on("/", () => {
-    if (checkAuth()) renderHomeLayout(router);
-  })
-  .on("/home", () => {
-    if (checkAuth()) renderHomeLayout(router);
-  })
-  .on("/customers", () => {
-    if (checkAuth()) renderMainLayout(router);
-  })
-  .on("/products", () => {
-    renderProductPage(router);
-  })
-  .on("/products/create", () => {
-    renderEditProductPage(router);
-  })
-  .on("/orders", () => {
-    document.getElementById("main-content").innerHTML = OrdersPage();
-    initOrders(router);
-  })
-  .on("/reports", () => {
-    if (checkAuth()) renderReportLayout(router);
-  })
-  .notFound(() => {
-    if (checkAuth()) router.navigate("/");
-  })
-  .resolve();
+// Chưa đăng nhập -> chặn ngay, không load bất kỳ trang nào khác
+if (checkAuth()) {
+  // 2. Cấu hình lại các route với checkAuth (lazy-load từng trang khi được truy cập)
+  router
+    .on("/", async () => {
+      const { renderHomeLayout } = await import("./src/Home/home.js");
+      renderHomeLayout(router);
+    })
+    .on("/home", async () => {
+      const { renderHomeLayout } = await import("./src/Home/home.js");
+      renderHomeLayout(router);
+    })
+    .on("/customers", async () => {
+      const { renderMainLayout } = await import("./src/customers/main.js");
+      renderMainLayout(router);
+    })
+    .on("/products", async () => {
+      const { renderProductPage } = await import("./src/products/products.js");
+      renderProductPage(router);
+    })
+    .on("/products/create", async () => {
+      const { renderEditProductPage } = await import(
+        "./src/products/service/edit.js"
+      );
+      renderEditProductPage(router);
+    })
+    .on("/orders", async () => {
+      const { OrdersPage } = await import("./src/orders/index.js");
+      const { initOrders } = await import("./src/orders/main.js");
+      document.getElementById("main-content").innerHTML = OrdersPage();
+      initOrders(router);
+    })
+    .on("/reports", async () => {
+      const { renderReportLayout } = await import("./src/reports/main.js");
+      renderReportLayout(router);
+    })
+    .notFound(() => {
+      router.navigate("/");
+    })
+    .resolve();
 
-console.log("Router đã chạy và đang bảo vệ trang!");
+  console.log("Router đã chạy và đang bảo vệ trang!");
+}

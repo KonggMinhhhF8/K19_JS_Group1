@@ -242,6 +242,11 @@ small {
     z-index: 999;
 }
 
+/* Cần :not(.hidden) để thắng được rule .modal { display: none } dùng chung ở style.css gốc */
+.modal:not(.hidden) {
+    display: block;
+}
+
 .modal-overlay {
     position: absolute;
     inset: 0;

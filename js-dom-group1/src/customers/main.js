@@ -218,5 +218,3 @@ export const initPage = async () => {
     console.error("Lỗi khởi tạo trang:", error);
   }
 };
-
-initPage();

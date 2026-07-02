@@ -3,7 +3,7 @@ import { renderSidebar } from "../shared/utils/sidebar.js";
 export function OrdersPage() {
   return `
     <div class="container">
-            <main class="main-content2">
+            <main class="main-content">
                 <header>
                     <div class="search-bar">
                         <input
