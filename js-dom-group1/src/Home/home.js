@@ -1,5 +1,5 @@
 import axios from "axios";
-import { token } from "../config/token";
+import {getAccessToken} from "../shared/utils/tokenStorage"
 import { renderSidebar } from "../shared/utils/sidebar";
 const api =
   "https://wo365ovs53.execute-api.ap-southeast-1.amazonaws.com/orders";
@@ -49,7 +49,7 @@ async function fetchOrders() {
   try {
     const res = await axios.get(api, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getAccessToken()}`,
         Accept: "application/json",
       },
     });

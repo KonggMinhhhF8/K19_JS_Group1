@@ -1,5 +1,6 @@
 import axios, { create } from "axios";
-import { token } from "../../config/token";
+
+import {getAccessToken} from "../../shared/utils/tokenStorage"
 const apiUrl="https://wo365ovs53.execute-api.ap-southeast-1.amazonaws.com/products";
 export const productsService={
     //get all
@@ -7,7 +8,7 @@ export const productsService={
         try{
             const res=await axios.get(apiUrl,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    Authorization:`Bearer ${getAccessToken()}`,
                     Accept:"application/json"
                 }
             })
@@ -26,7 +27,7 @@ export const productsService={
         try{
             const res= await axios.get(`${apiUrl}/${id}`,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    Authorization:`Bearer ${getAccessToken()}`,
                     Accept:"application/json"
                 }
             })
@@ -43,7 +44,7 @@ export const productsService={
         try{
             const res =await axios.delete(`${apiUrl}/${id}`,{
                 headers:{
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${getAccessToken()}`
                 }
             })
             console.log("Delete successfully");
@@ -60,7 +61,7 @@ export const productsService={
         try{
             const res=await axios.put(`${apiUrl}/${id}`,product,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    Authorization:`Bearer ${getAccessToken()}`,
                     Accept:"application/json"
                 }
             })
@@ -78,7 +79,7 @@ export const productsService={
         try{
             const res=await axios.post(`${apiUrl}`,product,{
                 headers:{
-                    Authorization:`Bearer ${token}`,
+                    Authorization:`Bearer ${getAccessToken()}`,
                     Accept:"application/json"
                 }
             })

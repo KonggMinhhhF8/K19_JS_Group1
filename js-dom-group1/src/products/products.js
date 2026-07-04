@@ -227,8 +227,6 @@ export function renderProductPage(router) {
     mainContainer.className = "flex-1 p-6 w-full min-h-screen bg-[#f4f7f6]";
     mainContainer.innerHTML = getProductsListHTML();
   }
-  // initProductPage(router);
-  setTimeout(() => {
-    initProductPage(router);
-  }, 500);
+  initProductPage(router);
+  
 }
