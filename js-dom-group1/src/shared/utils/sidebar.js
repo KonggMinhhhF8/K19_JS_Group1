@@ -1,3 +1,4 @@
+import { logout } from "./logout.js";
 const sidebars = [
   { key: "home", value: "Tổng quan", icon: "fas fa-home", path: "/" },
   { key: "products", value: "Sản phẩm", icon: "fas fa-box", path: "/products" },
@@ -19,8 +20,13 @@ const sidebars = [
     icon: "fas fa-chart-line",
     path: "/reports",
   },
+  {
+    key: "logout",
+    value: "Đăng xuất",
+    icon: "fas fa-sign-out-alt",
+    path: "/logout",
+  },
 ];
-
 export const renderSidebar = (activeKey, router) => {
   const sidebarContainer = document.getElementById("sidebarContainer");
   if (!sidebarContainer) return;
@@ -29,7 +35,7 @@ export const renderSidebar = (activeKey, router) => {
 
   const sidebar = document.createElement("aside");
   sidebar.className =
-    "w-[260px] bg-[#2c3e50] text-white p-6 sticky top-0 h-screen";
+    "w-[260px] bg-[#2c3e50] text-white p-6 sticky top-0 h-screen flex flex-col"; // Thêm flex để đẩy nút xuống dưới nếu muốn
 
   const h2 = document.createElement("h2");
   h2.className = "text-[#3498db] text-2xl font-bold text-center mb-10";
@@ -44,17 +50,20 @@ export const renderSidebar = (activeKey, router) => {
     const li = document.createElement("li");
     const isActive = item.key === activeKey;
 
-    const baseClasses =
-      "p-4 cursor-pointer rounded-lg transition duration-300 ";
-    const stateClasses = isActive
-      ? "bg-slate-700 text-[#3498db]"
-      : "text-gray-300 hover:bg-slate-700 hover:text-[#3498db]";
+    li.className = `p-4 cursor-pointer rounded-lg transition duration-300 ${
+      isActive
+        ? "bg-slate-700 text-[#3498db]"
+        : "text-gray-300 hover:bg-slate-700 hover:text-[#3498db]"
+    }`;
 
-    li.className = baseClasses + stateClasses;
     li.innerHTML = `<i class="${item.icon} w-5 mr-3"></i> ${item.value}`;
 
     li.addEventListener("click", () => {
-      router.navigate(item.path);
+      if (item.key === "logout") {
+        logout();
+      } else {
+        router.navigate(item.path);
+      }
     });
 
     ul.appendChild(li);
