@@ -1,11 +1,11 @@
 # K19_JS_Group1
-# 🛒 ShopAdmin – Hệ Thống Quản Lý Bán Hàng (JavaScript Thuần - K18)
+# 🛒 ShopAdmin – Hệ Thống Quản Lý Bán Hàng (JavaScript Thuần - K19)
 
 ## 📌 Giới thiệu
 
 **ShopAdmin** là dự án xây dựng hệ thống quản lý bán hàng sử dụng JavaScript thuần (Vanilla JS), không sử dụng framework.
 
-Dự án được thực hiện bởi sinh viên K18 nhằm mục tiêu:
+Dự án được thực hiện bởi sinh viên K19 nhằm mục tiêu:
 - Thực hành thao tác DOM
 - Xây dựng CRUD bằng JavaScript thuần
 - Quản lý dữ liệu với LocalStorage
